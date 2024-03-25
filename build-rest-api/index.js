@@ -6,6 +6,7 @@ const courses = [
   { id: 3, name: "Course3" },
 ];
 
+// app.use(express.json());
 const app = express();
 
 app.get("/", (req, res) => {
@@ -14,6 +15,17 @@ app.get("/", (req, res) => {
 
 app.get("/api/courses", (req, res) => {
   res.send(courses);
+});
+
+//post /api/courses
+app.use(express.json());
+app.post("/api/courses", (req, res) => {
+  const course = {
+    id: courses.length + 1,
+    name: req.body.name,
+  };
+  courses.push(course);
+  res.send(course);
 });
 
 //get by id
