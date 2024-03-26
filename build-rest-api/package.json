@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "express": "^4.19.1",
+    "joi": "^17.12.2",
     "nodemon": "^3.1.0"
   },
   "name": "build-rest-api",
