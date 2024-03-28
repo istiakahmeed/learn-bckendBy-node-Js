@@ -1,4 +1,8 @@
 const express = require("express");
+const logger = require("./logger");
+const helmet = require("helmet");
+const morgan = require("morgan");
+const config = require("config");
 const Joi = require("joi");
 const courses = [
   { id: 1, name: "Course1" },
@@ -7,8 +11,26 @@ const courses = [
 ];
 
 // app.use(express.json());
+
 const app = express();
 
+if (app.get("env") === "development") {
+  app.use(morgan("tiny"));
+  console.log("Morgan Enabled...");
+}
+
+//middleware routes
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
+app.use(helmet());
+
+app.use(logger);
+
+//middleware routes
+
+//Configuration
+console.log("Application Name: " + config.get("name"));
+console.log("Mail Server: " + config.get("mail.host"));
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
