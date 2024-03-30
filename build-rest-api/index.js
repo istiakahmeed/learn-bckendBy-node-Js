@@ -1,3 +1,5 @@
+const startupDebugger = require("debug")("app:startup");
+const dbDebugger = require("debug")("app:db");
 const express = require("express");
 const logger = require("./logger");
 const helmet = require("helmet");
@@ -13,12 +15,15 @@ const courses = [
 // app.use(express.json());
 
 const app = express();
+app.set("view engine", "pug");
+app.set("Views", "./views");
 
 if (app.get("env") === "development") {
   app.use(morgan("tiny"));
-  console.log("Morgan Enabled...");
+  startupDebugger("Morgan Enabled...");
 }
 
+dbDebugger("Connected your database");
 //middleware routes
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
@@ -32,7 +37,8 @@ app.use(logger);
 console.log("Application Name: " + config.get("name"));
 console.log("Mail Server: " + config.get("mail.host"));
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  // res.send("Hello World!");
+  res.render("index", { title: "My Express app", title: "Hello" }); //using pug
 });
 
 app.get("/api/courses", (req, res) => {
